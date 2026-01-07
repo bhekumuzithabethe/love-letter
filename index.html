@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ntati Photsoane</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='90' font-size='90'>❤️</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a2a, #1a0033);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .header {
+            position: absolute;
+            top: 20px;
+            text-align: center;
+            z-index: 100;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #ff6b9d;
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.8);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #a3d9ff;
+            font-style: italic;
+            text-shadow: 0 0 10px rgba(163, 217, 255, 0.7);
+        }
+        
+        /* Main animation grid */
+        .animation-grid {
+            width: 90%;
+            height: 70%;
+            max-width: 1200px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(0, 0, 20, 0.5);
+            box-shadow: 0 0 50px rgba(255, 107, 157, 0.4);
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Flower burst elements */
+        .flower {
+            position: absolute;
+            font-size: 0;
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        /* I LOVE YOU animation */
+        .love-text-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            opacity: 0;
+        }
+        
+        .love-text {
+            font-size: 6rem;
+            font-weight: bold;
+            letter-spacing: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .love-char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(50px);
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        /* Glowing heart */
+        .heart-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4;
+            opacity: 0;
+        }
+        
+        .glowing-heart {
+            font-size: 15rem;
+            color: #ff3366;
+            text-shadow: 0 0 50px currentColor;
+            animation: heartbeat 1.5s infinite;
+            transform-origin: center;
+        }
+        
+        .heart-message {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            font-size: 2rem;
+            color: #ffcc00;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+            font-style: italic;
+        }
+        
+        /* Signature */
+        .signature {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            color: #a3d9ff;
+            padding: 15px;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* Music controls */
+        .music-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            gap: 10px;
+        }
+
+        .music-btn {
+            background: rgba(255, 107, 157, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+        }
+
+        .music-btn:hover {
+            background: rgba(255, 107, 157, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+        }
+
+        .music-btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* Animations */
+        @keyframes flowerBurst {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0.1);
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(1);
+            }
+        }
+        
+        @keyframes charAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+                text-shadow: 0 0 30px #ff3366;
+            }
+            50% {
+                transform: scale(1.15);
+                text-shadow: 0 0 80px #ff6b9d, 0 0 120px #ff6b9d;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .animation-grid {
+                height: 60%;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .love-text {
+                font-size: 4.5rem;
+            }
+            
+            .glowing-heart {
+                font-size: 12rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .animation-grid {
+                height: 50%;
+            }
+            
+            .love-text {
+                font-size: 3.5rem;
+                letter-spacing: 5px;
+            }
+            
+            .glowing-heart {
+                font-size: 10rem;
+            }
+            
+            .heart-message {
+                font-size: 1.5rem;
+            }
+
+            .music-controls {
+                top: 10px;
+                right: 10px;
+            }
+
+            .music-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .love-text {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+            }
+            
+            .glowing-heart {
+                font-size: 8rem;
+            }
+            
+            .heart-message {
+                font-size: 1.2rem;
+            }
+            
+            .signature {
+                font-size: 1.2rem;
+            }
+
+            .music-controls {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Nkanyezi</h1>
+            <p class="subtitle">Sengikukhumbulile mina manje</p>
+        </div>
+
+        <!-- Music Controls -->
+        <div class="music-controls">
+            <button id="playMusicBtn" class="music-btn">
+                <i class="fas fa-play"></i> Play Music
+            </button>
+            <button id="pauseMusicBtn" class="music-btn">
+                <i class="fas fa-pause"></i> Pause Music
+            </button>
+           
+        </div>
+        
+        <div class="animation-grid" id="animationGrid">
+            <!-- All animations will happen here -->
+        </div>
+        
+        <div class="signature">
+            <p>Swidi lami lomkhuhlane ulale kahle namhlanje, ungakhohlwa ukungiphupha futhi😘</p>
+        </div>
+    </div>
+
+    <!-- Hidden YouTube player container -->
+    <div id="player" style="display: none;"></div>
+
+    <!-- Load YouTube IFrame API -->
+    <script>
+        // Load YouTube API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Global player variable
+        var player;
+
+        // YouTube API ready callback
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: 'X2zrKFrx6G0',
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'loop': 1,
+                    'modestbranding': 1,
+                    'playsinline': 1,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'start': 24,
+                    'enablejsapi': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // When player is ready
+        function onPlayerReady(event) {
+            console.log("YouTube player is ready");
+            // Try to play the video
+            event.target.playVideo();
+            
+            // Update music controls
+            updateMusicControls();
+        }
+
+        // Handle player state changes
+        function onPlayerStateChange(event) {
+            console.log("Player state changed:", event.data);
+            updateMusicControls();
+        }
+
+        // Update music control buttons
+        function updateMusicControls() {
+            if (!player) return;
+            
+            const playBtn = document.getElementById('playMusicBtn');
+            const pauseBtn = document.getElementById('pauseMusicBtn');
+            
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                playBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Music';
+                playBtn.onclick = pauseMusic;
+            } else {
+                playBtn.innerHTML = '<i class="fas fa-play"></i> Play Music';
+                playBtn.onclick = playMusic;
+            }
+          
+        }
+
+        // Music control functions
+        function playMusic() {
+            if (player && player.playVideo) {
+                player.playVideo();
+                updateMusicControls();
+            }
+        }
+
+        function pauseMusic() {
+            if (player && player.pauseVideo) {
+                player.pauseVideo();
+                updateMusicControls();
+            }
+        }
+
+        function toggleMute() {
+            if (player) {
+                if (player.isMuted()) {
+                    player.unMute();
+                } else {
+                    player.mute();
+                }
+                updateMusicControls();
+            }
+        }
+
+        // Add event listeners when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('playMusicBtn').addEventListener('click', function() {
+                if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
+                    pauseMusic();
+                } else {
+                    playMusic();
+                }
+            });
+            
+            document.getElementById('pauseMusicBtn').addEventListener('click', pauseMusic);
+            
+            // Also try to play music on first user interaction (for autoplay restrictions)
+            document.addEventListener('click', function firstInteraction() {
+                if (player && player.getPlayerState() === YT.PlayerState.UNSTARTED) {
+                    playMusic();
+                }
+                document.removeEventListener('click', firstInteraction);
+            }, { once: true });
+        });
+    </script>
+
+    <script>
+        // Get the main animation grid
+        const animationGrid = document.getElementById('animationGrid');
+        
+        // Flower icons
+        const flowerIcons = ['🌸', '🌹', '🌺', '🌻', '🌼', '💐', '🥀', '🪷', '🌷', '⚘', '❀', '✿', '💮', '🏵️', '🌱', '🍃', '🌿', '☘️', '🍀', '🎋'];
+        
+        // Love message characters
+        const loveMessage = "Ngiyak'thanda ❤️";
+        
+        // Animation phases
+        const PHASES = {
+            FLOWER_BURST: 'flowerBurst',
+            LOVE_TEXT: 'loveText',
+            HEART: 'heart',
+            PAUSE: 'pause'
+        };
+        
+        // Current phase
+        let currentPhase = PHASES.FLOWER_BURST;
+        
+        // Start the infinite loop
+        startAnimationLoop();
+        
+        function startAnimationLoop() {
+            // Start with flower burst
+            createFlowerBurst();
+            
+            // After flower burst, show love text
+            setTimeout(() => {
+                currentPhase = PHASES.LOVE_TEXT;
+                showLoveText();
+            }, 4000);
+            
+            // After love text, show heart
+            setTimeout(() => {
+                currentPhase = PHASES.HEART;
+                showGlowingHeart();
+            }, 9000);
+            
+            // After heart, restart the loop
+            setTimeout(() => {
+                currentPhase = PHASES.PAUSE;
+                // Clear the grid
+                animationGrid.innerHTML = '';
+                // Short pause before restarting
+                setTimeout(() => {
+                    startAnimationLoop();
+                }, 1000);
+            }, 14000);
+        }
+        
+        function createFlowerBurst() {
+            // Create 150 flowers for a more dense burst
+            const numFlowers = 150;
+            
+            for (let i = 0; i < numFlowers; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                
+                // Random flower icon
+                const randomIcon = flowerIcons[Math.floor(Math.random() * flowerIcons.length)];
+                flower.innerHTML = randomIcon;
+                
+                // Random position (burst from center)
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 50 + Math.random() * 300;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                // Random size
+                const size = 20 + Math.random() * 40;
+                flower.style.fontSize = `${size}px`;
+                
+                // Random color
+                const colors = ['#ff6b9d', '#ff3366', '#ff9966', '#ffcc00', '#a3d9ff', '#cc66ff', '#ff66cc', '#99ff99', '#ff9966'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                flower.style.color = randomColor;
+                
+                // Set CSS custom properties for animation
+                flower.style.setProperty('--tx', `${tx}px`);
+                flower.style.setProperty('--ty', `${ty}px`);
+                
+                // Random animation duration and delay
+                const duration = 3 + Math.random() * 2;
+                const delay = Math.random() * 1.5;
+                
+                // Apply animation
+                flower.style.animation = `flowerBurst ${duration}s ease-out ${delay}s forwards`;
+                
+                animationGrid.appendChild(flower);
+                
+                // Remove flower after animation completes
+                setTimeout(() => {
+                    if (flower.parentNode) {
+                        flower.remove();
+                    }
+                }, (duration + delay) * 1000);
+            }
+        }
+        
+        function showLoveText() {
+            // Create container for love text
+            const loveContainer = document.createElement('div');
+            loveContainer.className = 'love-text-container';
+            loveContainer.style.animation = 'fadeIn 0.5s forwards';
+            animationGrid.appendChild(loveContainer);
+            
+            // Create the love text element
+            const loveText = document.createElement('div');
+            loveText.className = 'love-text';
+            loveContainer.appendChild(loveText);
+            
+            // Create each character separately
+            for (let i = 0; i < loveMessage.length; i++) {
+                const char = document.createElement('span');
+                char.className = 'love-char';
+                char.textContent = loveMessage[i];
+                
+                // Space character special handling
+                if (loveMessage[i] === ' ') {
+                    char.innerHTML = '&nbsp;';
+                }
+                
+                // Different colors for different characters
+                const charColors = ['#ff6b9d', '#ff3366', '#ff9966', '#ffcc00', '#a3d9ff', '#cc66ff', '#ff66cc', '#99ff99'];
+                const colorIndex = i % charColors.length;
+                char.style.color = charColors[colorIndex];
+                
+                // Staggered animation for each character
+                const delay = i * 0.2;
+                char.style.animation = `charAppear 5s ease-in-out ${delay}s forwards`;
+                
+                loveText.appendChild(char);
+            }
+            
+            // Remove love text after animation
+            setTimeout(() => {
+                if (loveContainer.parentNode) {
+                    loveContainer.remove();
+                }
+            }, 5000);
+        }
+        
+        function showGlowingHeart() {
+            // Create container for heart
+            const heartContainer = document.createElement('div');
+            heartContainer.className = 'heart-container';
+            heartContainer.style.animation = 'fadeIn 0.5s forwards';
+            animationGrid.appendChild(heartContainer);
+            
+            // Create glowing heart
+            const heart = document.createElement('div');
+            heart.className = 'glowing-heart';
+            heart.innerHTML = '❤️';
+            heartContainer.appendChild(heart);
+            
+            // Create heart message
+            const heartMessage = document.createElement('div');
+            heartMessage.className = 'heart-message';
+            heartMessage.textContent = 'And I know you think about me.';
+            heartContainer.appendChild(heartMessage);
+            
+            // Make heart interactive
+            heart.addEventListener('click', createHeartExplosion);
+            
+            // Remove heart after animation
+            setTimeout(() => {
+                if (heartContainer.parentNode) {
+                    heartContainer.remove();
+                }
+            }, 5000);
+        }
+        
+        function createHeartExplosion() {
+            // Create heart particles explosion
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.innerHTML = '❤️';
+                particle.style.position = 'absolute';
+                particle.style.fontSize = `${20 + Math.random() * 40}px`;
+                particle.style.color = '#ff3366';
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                particle.style.opacity = '0';
+                particle.style.zIndex = '10';
+                particle.style.pointerEvents = 'none';
+                particle.style.transform = 'translate(-50%, -50%)';
+                
+                // Random direction
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * 200;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                // Animation
+                particle.animate([
+                    { opacity: 0, transform: 'translate(-50%, -50%) scale(0.5)' },
+                    { opacity: 1, transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.2)` },
+                    { opacity: 0, transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0.5)` }
+                ], {
+                    duration: 2000,
+                    easing: 'ease-out'
+                });
+                
+                animationGrid.appendChild(particle);
+                
+                // Remove particle after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.remove();
+                    }
+                }, 2000);
+            }
+        }
+        
+        // Add a welcome message in console
+        console.log("%c❤️ Eternal Love Loop Activated ❤️", "color: #ff3366; font-size: 18px; font-weight: bold;");
+        console.log("%cThis love animation will run forever, just like my love for you!", "color: #a3d9ff; font-size: 14px;");
+    </script>
+</body>
+</html>
