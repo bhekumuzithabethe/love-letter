@@ -329,8 +329,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Nkanyezi</h1>
-            <p class="subtitle">Sengikukhumbulile mina manje</p>
+            <!-- <h1>Nkanyezi</h1> -->
+            <p class="subtitle">Themba Lami</p>
         </div>
 
         <!-- Music Controls -->
@@ -348,9 +348,9 @@
             <!-- All animations will happen here -->
         </div>
         
-        <div class="signature">
+        <!-- <div class="signature">
             <p>Swidi lami lomkhuhlane ulale kahle namhlanje, ungakhohlwa ukungiphupha futhi😘</p>
-        </div>
+        </div> -->
     </div>
 
     <!-- Hidden YouTube player container -->
@@ -395,14 +395,14 @@
 
         // When player is ready
         function onPlayerReady(event) {
-            console.log("YouTube player is ready");
-            // Try to play the video
-            event.target.playVideo();
-            
-            // Update music controls
-            updateMusicControls();
-        }
-
+    console.log("YouTube player is ready");
+    
+    // Mute first to bypass mobile browser autoplay restrictions
+    event.target.mute();
+    event.target.playVideo();
+    
+    updateMusicControls();
+}
         // Handle player state changes
         function onPlayerStateChange(event) {
             console.log("Player state changed:", event.data);
