@@ -359,50 +359,49 @@
     <!-- Load YouTube IFrame API -->
     <script>
         // Load YouTube API
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Global player variable
-        var player;
+        // Global player variable
+        var player;
 
-        // YouTube API ready callback
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '0',
-                width: '0',
-                videoId: 'X2zrKFrx6G0',
-                playerVars: {
-                    'autoplay': 1,
-                    'controls': 0,
-                    'disablekb': 1,
-                    'fs': 0,
-                    'loop': 1,
-                    'modestbranding': 1,
-                    'playsinline': 1,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'start': 24,
-                    'enablejsapi': 1
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
+        // YouTube API ready callback
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: 'X2zrKFrx6G0',
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'loop': 1,
+                    'modestbranding': 1,
+                    'playsinline': 1,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'start': 24,
+                    'enablejsapi': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
 
-        // When player is ready
-        function onPlayerReady(event) {
-    console.log("YouTube player is ready");
-    
-    // Mute first to bypass mobile browser autoplay restrictions
-    event.target.mute();
-    event.target.playVideo();
-    
-    updateMusicControls();
-}
+        // When player is ready
+        function onPlayerReady(event) {
+            console.log("YouTube player is ready");
+            // Try to play the video
+            event.target.playVideo();
+            
+            // Update music controls
+            updateMusicControls();
+        }
         // Handle player state changes
         function onPlayerStateChange(event) {
             console.log("Player state changed:", event.data);
@@ -453,38 +452,25 @@
         }
 
         // Add event listeners when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    var playBtn = document.getElementById('playMusicBtn');
-    var pauseBtn = document.getElementById('pauseMusicBtn');
-
-    if (playBtn) {
-        playBtn.addEventListener('click', function() {
-            toggleMusic();
-        });
-    }
-
-    if (pauseBtn) {
-        pauseBtn.addEventListener('click', function() {
-            pauseMusic();
-        });
-    }
-
-    // Capture first user interaction across the document to unlock audio
-    function handleFirstInteraction() {
-        if (player && typeof player.getPlayerState === 'function') {
-            var state = player.getPlayerState();
-            // If player is not actively playing, unmute and play
-            if (state !== YT.PlayerState.PLAYING && state !== YT.PlayerState.BUFFERING) {
-                playMusic();
-            }
-        }
-    }
-
-    // Listen on multiple touch/click events to support iOS Safari & Chrome mobile
-    ['click', 'touchstart', 'touchend'].forEach(function(eventType) {
-        document.addEventListener(eventType, handleFirstInteraction, { once: true });
-    });
-});
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('playMusicBtn').addEventListener('click', function() {
+                if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
+                    pauseMusic();
+                } else {
+                    playMusic();
+                }
+            });
+            
+            document.getElementById('pauseMusicBtn').addEventListener('click', pauseMusic);
+            
+            // Also try to play music on first user interaction (for autoplay restrictions)
+            document.addEventListener('click', function firstInteraction() {
+                if (player && player.getPlayerState() === YT.PlayerState.UNSTARTED) {
+                    playMusic();
+                }
+                document.removeEventListener('click', firstInteraction);
+            }, { once: true });
+        });
     </script>
 
     <script>
